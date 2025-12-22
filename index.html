@@ -1,29 +1,23 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Calculadora de Frete</title>
-
-  <!-- Manifest PWA -->
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#1f2937">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="./estilo.css">
-</head>
 <body>
 
-  <h1>🛵 Calculadora de Frete</h1>
+  <div class="container">
+    <h1>🛵 ALENCAR FRETES 🛵</h1>
 
-  <label>KM da entrega:</label>
-  <input type="number" id="km" placeholder="Ex: 4">
+    <label for="km">KM da entrega</label>
+    <input type="number" id="km" placeholder="Ex: 4">
 
-  <button onclick="calcularFrete()">Calcular</button>
+    <button class="btn-calcular" onclick="calcularFrete()">
+      Calcular Frete
+    </button>
 
-  <p id="resultado"></p>
+    <div id="resultado"></div>
 
-  <!-- JS -->
+    <button class="btn-copiar" onclick="copiarResultado()">
+      📲 Copiar para WhatsApp
+    </button>
+
+    <div id="msgCopiado" class="copiado"></div>
+  </div>
+
   <script src="./script.js"></script>
-
 </body>
-</html>
