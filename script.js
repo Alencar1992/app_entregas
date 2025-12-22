@@ -1,45 +1,49 @@
-let textoParaCopiar = "";
+let mensagemWhatsApp = "";
 
 function calcularFrete() {
   const km = Number(document.getElementById("km").value);
   const valorPorKm = 1.90;
   const taxaMinima = 5.00;
 
-  if (km <= 0 || isNaN(km)) {
-    alert("Informe uma quilometragem válida");
+  if (!km || km <= 0) {
+    alert("Informe a quilometragem da entrega");
     return;
   }
 
   let valor = km * valorPorKm;
-  let mensagem = "";
+  let aviso = "";
 
   if (valor < taxaMinima) {
     valor = taxaMinima;
-    mensagem = "⚠️ Aplicada taxa mínima";
+    aviso = "⚠️ Aplicada taxa mínima";
   }
 
-  textoParaCopiar =
-`🛵 *ALENCAR FRETES*🛵
-📍 KM: ${km}
-💰 Valor: R$ ${valor.toFixed(2)}
-${mensagem}`;
+  const valorFormatado = valor.toFixed(2).replace(".", ",");
+
+  mensagemWhatsApp =
+`Oi😊
+
+O valor do seu frete ficou em *R$ ${valorFormatado}* 🛵💨
+
+📆Quando será a entrega?
+👤Quem vai receber?
+⌚Qual horario para ser entregue?
+⏳Que horas retiro com você?
+Obrigado!`;
 
   document.getElementById("resultado").innerHTML = `
-    💰 <strong>Valor do frete:</strong> R$ ${valor.toFixed(2)}
-    ${mensagem ? `<div class="aviso">${mensagem}</div>` : ""}
+    💰 <strong>Valor do frete:</strong> R$ ${valorFormatado}
+    ${aviso ? `<div class="aviso">${aviso}</div>` : ""}
   `;
-
-  document.getElementById("msgCopiado").innerText = "";
 }
 
 function copiarResultado() {
-  if (!textoParaCopiar) {
+  if (!mensagemWhatsApp) {
     alert("Calcule o frete primeiro");
     return;
   }
 
-  navigator.clipboard.writeText(textoParaCopiar).then(() => {
-    document.getElementById("msgCopiado").innerText =
-      "✅ Copiado! Agora é só colar no WhatsApp";
+  navigator.clipboard.writeText(mensagemWhatsApp).then(() => {
+    alert("Mensagem copiada! Agora é só colar no WhatsApp 📲");
   });
 }
