@@ -1,32 +1,79 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>🛵 ALENCAR FRETES 🛵</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="./manifest.json">
-  <link rel="stylesheet" href="estilo.css">
-</head>
+let mensagemWhatsApp = "";
 
-<body>
+const TAXA_MINIMA = 5.00;
+const LIMITE_KM = 15;
+const TAXA_EXTRA_POR_KM = 0.50;
 
-  <div class="card">
-    <h1>🛵 ALENCAR FRETES 🛵</h1>
+// Carregar valor salvo
+let valorPorKm = Number(localStorage.getItem("valorKm")) || 1.90;
 
-    <label>KM da entrega</label>
-    <input type="number" id="km" placeholder="Ex: 12">
+function calcularFrete() {
+  const km = Number(document.getElementById("km").value);
+  if (!km || km <= 0) {
+    alert("Informe a quilometragem");
+    return;
+  }
 
-    <button class="btn calcular" onclick="calcularFrete()">Calcular Frete</button>
+  let valorIda = km * valorPorKm;
+  let taxaExtra = 0;
+  let aviso = "";
 
-    <div id="resultado"></div>
+  if (km > LIMITE_KM) {
+    taxaExtra = (km / 2) * TAXA_EXTRA_POR_KM;
+    aviso = "🚨 Taxa adicional aplicada (distância acima de 15 km)";
+  }
 
-    <button class="btn whatsapp" onclick="abrirWhatsApp()">📲 Enviar no WhatsApp</button>
+  let total = valorIda + taxaExtra;
 
-    <button class="btn config" onclick="abrirConfig()">⚙️ Configurações</button>
-  </div>
+  if (total < TAXA_MINIMA) {
+    total = TAXA_MINIMA;
+    aviso = "⚠️ Aplicada taxa mínima";
+  }
 
- 
-  <script src="script.js"></script>
-</body>
-</html>
+  const f = v => v.toFixed(2).replace(".", ",");
 
+  mensagemWhatsApp =
+`Olá 😊
+
+O valor do seu frete ficou em *R$ ${f(total)}* 🛵
+
+📍 Distância: ${km} km
+💰 Valor da ida: R$ ${f(valorIda)}
+➕ Taxa adicional: R$ ${f(taxaExtra)}
+
+${aviso}
+Qualquer dúvida fico à disposição.`;
+
+  document.getElementById("resultado").innerHTML = `
+    <div class="linha">💰 <strong>Ida:</strong> R$ ${f(valorIda)}</div>
+    <div class="linha">➕ <strong>Taxa extra:</strong> R$ ${f(taxaExtra)}</div>
+    <div class="linha"><strong>✅ Total:</strong> R$ ${f(total)}</div>
+    ${aviso ? `<div class="linha">${aviso}</div>` : ""}
+  `;
+}
+
+function abrirWhatsApp() {
+  if (!mensagemWhatsApp) {
+    alert("Calcule o frete primeiro");
+    return;
+  }
+  const texto = encodeURIComponent(mensagemWhatsApp);
+  window.open(`https://wa.me/?text=${texto}`, "_blank");
+}
+
+/* CONFIGURAÇÕES */
+function abrirConfig() {
+  document.getElementById("modalConfig").style.display = "flex";
+  document.getElementById("valorKm").value = valorPorKm;
+}
+
+function fecharConfig() {
+  document.getElementById("modalConfig").style.display = "none";
+}
+
+function salvarConfig() {
+  valorPorKm = Number(document.getElementById("valorKm").value);
+  localStorage.setItem("valorKm", valorPorKm);
+  alert("Configuração salva ✅");
+  fecharConfig();
+}
