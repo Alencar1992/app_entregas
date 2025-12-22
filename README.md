@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora de Frete</title>
+  <title>ALENCAR-FRETES</title>
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1f2937">
@@ -11,7 +11,7 @@
 </head>
 <body>
 
-  <h1>🛵 Calculadora de Frete</h1>
+  <h1>🛵 ALENCAR-FRETES</h1>
 
   <label>KM da entrega:</label>
   <input type="number" id="km" placeholder="Ex: 4">
