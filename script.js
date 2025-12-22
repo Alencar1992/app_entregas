@@ -13,10 +13,10 @@ function calcularFrete() {
     return;
   }
 
-  // Valor base (somente ida)
-  let valor = km * valorPorKm;
+  // Valor base (somente ida) 
+  {let valor = km * valorPorKm;
   let aviso = "";
-
+}
   // Regra para km acima de 15
   if (km > limiteKm) {
     const taxaExtra = (km / 2) * taxaExtraPorKm;
