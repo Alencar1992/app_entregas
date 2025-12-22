@@ -4,15 +4,25 @@ function calcularFrete() {
   const km = Number(document.getElementById("km").value);
   const valorPorKm = 1.90;
   const taxaMinima = 5.00;
+  const limiteKm = 15;
 
   if (!km || km <= 0) {
     alert("Informe a quilometragem da entrega");
     return;
   }
 
+  // Valor base (somente ida)
   let valor = km * valorPorKm;
   let aviso = "";
 
+  // Regra da taxa adicional parcial de volta
+  if (km > limiteKm) {
+    const taxaAdicional = (km / 2) * valorPorKm;
+    valor += taxaAdicional;
+    aviso = "🚨 Distância acima de 15km: aplicada taxa adicional parcial de retorno";
+  }
+
+  // Taxa mínima
   if (valor < taxaMinima) {
     valor = taxaMinima;
     aviso = "⚠️ Aplicada taxa mínima";
@@ -25,10 +35,9 @@ function calcularFrete() {
 
 O valor do seu frete ficou em *R$ ${valorFormatado}* 🛵💨
 
-📆Quando será a entrega?
-👤Quem vai receber?
-⌚Qual horario para ser entregue?
-⏳Que horas retiro com você?
+📍 Distância: ${km} km
+${aviso ? "ℹ️ " + aviso + "\n" : ""}
+Qualquer dúvida fico à disposição.
 Obrigado!`;
 
   document.getElementById("resultado").innerHTML = `
