@@ -13,17 +13,18 @@
 </head>
 <body>
 
-  <h1>🛵 Calculadora de Frete</h1>
+  <div class="container">
+    <h1>🛵 Frete Fácil</h1>
 
-  <label>KM da entrega:</label>
-  <input type="number" id="km" placeholder="Ex: 4">
+    <label for="km">KM da entrega</label>
+    <input type="number" id="km" placeholder="Ex: 4">
 
-  <button onclick="calcularFrete()">Calcular</button>
+    <button onclick="calcularFrete()">Calcular Frete</button>
 
-  <p id="resultado"></p>
+    <div id="resultado"></div>
+  </div>
 
-  <!-- JS -->
   <script src="./script.js"></script>
-
 </body>
 </html>
+
