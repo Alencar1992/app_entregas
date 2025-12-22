@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title> 🛵ALENCAR FRETES🛵 </title>
+  <title>ALENCAR FRETES</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
@@ -13,6 +13,13 @@
     <h1>🏍️ ALENCAR FRETES</h1>
 
     <input type="number" id="km" placeholder="Distância em KM">
+
+    <!-- NOVO: SELEÇÃO DE CLIENTE -->
+    <select id="cliente">
+      <option value="">Selecione a cliente</option>
+      <option value="PriPel">PriPel</option>
+      <option value="KarlaBrie">Karla Brie</option>
+    </select>
 
     <button onclick="calcular()">Calcular Frete</button>
 
@@ -25,4 +32,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
