@@ -26,13 +26,18 @@ function calcular() {
     `💰 Valor do frete: R$ ${valorFinal}`;
 }
 
-function copiar() {
-  navigator.clipboard.writeText(`Valor do frete: R$ ${valorFinal}`);
-  alert("Valor copiado!");
-}
-
 function whatsapp() {
-  const msg = `Olá! 🏍️\nO valor do frete é R$ ${valorFinal}`;
-  const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  if (valorFinal === 0) {
+    alert("Calcule o frete antes de enviar.");
+    return;
+  }
+
+  const mensagem = `🏍️ *ALENCAR FRETES*\n\n💰 Valor do frete: R$ ${valorFinal}`;
+
+  // copia automaticamente
+  navigator.clipboard.writeText(mensagem);
+
+  // abre o WhatsApp
+  const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
   window.open(url, "_blank");
 }
