@@ -7,7 +7,7 @@ function calcularFrete() {
   const km = Number(document.getElementById("km").value);
 
   if (!km || km <= 0) {
-    alert("Informe a quilometragem");
+    alert("Informe a quilometragem da entrega");
     return;
   }
 
