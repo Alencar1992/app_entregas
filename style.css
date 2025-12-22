@@ -1,84 +1,94 @@
-let mensagemWhatsApp = "";
-
-const TAXA_MINIMA = 5.00;
-const LIMITE_KM = 15;
-const TAXA_EXTRA_POR_KM = 0.50;
-
-// Carregar valor salvo
-let valorPorKm = Number(localStorage.getItem("valorKm")) || 1.90;
-
-function calcularFrete() {
-  const km = Number(document.getElementById("km").value);
-  if (!km || km <= 0) {
-    alert("Informe a quilometragem");
-    return;
-  }
-
-  let valorIda = km * valorPorKm;
-  let taxaExtra = 0;
-  let aviso = "";
-
-  if (km > LIMITE_KM) {
-    taxaExtra = (km / 2) * TAXA_EXTRA_POR_KM;
-    aviso = "🚨 Taxa adicional aplicada (distância acima de 15 km)";
-  }
-
-  let total = valorIda + taxaExtra;
-
-  if (total < TAXA_MINIMA) {
-    total = TAXA_MINIMA;
-    aviso = "⚠️ Aplicada taxa mínima";
-  }
-
-  const f = v => v.toFixed(2).replace(".", ",");
-
-  mensagemWhatsApp =
-`Oi 😊
-
-O valor do seu frete ficou em *R$ ${f(total)}* 🛵
-
-📍 Distância: ${km} km
-💰 Valor da ida: R$ ${f(valorIda)}
-➕ Taxa adicional: R$ ${f(taxaExtra)}
-📆Quando será a entrega?
-👤Quem vai receber?
-⌚Qual horario para ser entregue?
-⏳Que horas retiro com você?
-Obrigado!
-  
-${aviso}
-Qualquer dúvida fico à disposição.`;
-
-  document.getElementById("resultado").innerHTML = `
-    <div class="linha">💰 <strong>Ida:</strong> R$ ${f(valorIda)}</div>
-    <div class="linha">➕ <strong>Taxa extra:</strong> R$ ${f(taxaExtra)}</div>
-    <div class="linha"><strong>✅ Total:</strong> R$ ${f(total)}</div>
-    ${aviso ? `<div class="linha">${aviso}</div>` : ""}
-  `;
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
-function abrirWhatsApp() {
-  if (!mensagemWhatsApp) {
-    alert("Calcule o frete primeiro");
-    return;
-  }
-  const texto = encodeURIComponent(mensagemWhatsApp);
-  window.open(`https://wa.me/?text=${texto}`, "_blank");
+body {
+  margin: 0;
+  background: #020617;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-/* CONFIGURAÇÕES */
-function abrirConfig() {
-  document.getElementById("modalConfig").style.display = "flex";
-  document.getElementById("valorKm").value = valorPorKm;
+.container {
+  background: #0f172a;
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(37,99,235,0.25);
 }
 
-function fecharConfig() {
-  document.getElementById("modalConfig").style.display = "none";
+h1 {
+  text-align: center;
+  color: #e5e7eb;
+  margin-bottom: 24px;
 }
 
-function salvarConfig() {
-  valorPorKm = Number(document.getElementById("valorKm").value);
-  localStorage.setItem("valorKm", valorPorKm);
-  alert("Configuração salva ✅");
-  fecharConfig();
+label {
+  color: #cbd5f5;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: none;
+  background: #020617;
+  color: #f8fafc;
+  font-size: 16px;
+}
+
+input::placeholder {
+  color: #64748b;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  font-size: 17px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-calcular {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  margin-bottom: 12px;
+}
+
+.btn-copiar {
+  background: #16a34a;
+  color: white;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+#resultado {
+  margin-top: 20px;
+  padding: 16px;
+  background: #020617;
+  border-radius: 14px;
+  color: #e5e7eb;
+  font-size: 16px;
+}
+
+.aviso {
+  margin-top: 8px;
+  color: #f87171;
+  font-weight: 600;
+}
+
+.copiado {
+  margin-top: 10px;
+  color: #4ade80;
+  font-size: 14px;
 }
