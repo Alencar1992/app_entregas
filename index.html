@@ -1,23 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title> 🛵ALENCAR FRETES🛵 </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-  <div class="container">
-    <h1>🛵 ALENCAR FRETES 🛵</h1>
+  <div class="card">
+    <h1>🏍️ ALENCAR FRETES</h1>
 
-    <label for="km">KM da entrega</label>
-    <input type="number" id="km" placeholder="Ex: 4">
+    <input type="number" id="km" placeholder="Distância em KM">
 
-    <button class="btn-calcular" onclick="calcularFrete()">
-      Calcular Frete
-    </button>
+    <button onclick="calcular()">Calcular Frete</button>
 
-    <div id="resultado"></div>
+    <p id="resultado"></p>
+    <p id="aviso"></p>
 
-    <button class="btn-copiar" onclick="copiarResultado()">
-      📲 Copiar para WhatsApp
-    </button>
-
-    <div id="msgCopiado" class="copiado"></div>
+    <button onclick="copiar()">📋 Copiar Valor</button>
+    <button onclick="whatsapp()">📲 Enviar WhatsApp</button>
   </div>
 
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
+</html>
