@@ -1,5 +1,10 @@
 let valorFinal = 0;
 
+const clientes = {
+  PriPel: "5511981071671",
+  KarlaBrie: "5511968971239"
+};
+
 function calcular() {
   const km = parseFloat(document.getElementById("km").value);
   const valorKm = 1.90;
@@ -18,12 +23,12 @@ function calcular() {
 
   if (valor < taxaMinima) {
     valor = taxaMinima;
-    document.getElementById("aviso").innerText = "⚠️Taxa Mínima Aplicada✅";
+    document.getElementById("aviso").innerText = "⚠️ Taxa mínima aplicada";
   }
 
   valorFinal = valor.toFixed(2);
   document.getElementById("resultado").innerText =
-    `💰 Valor do Frete: R$ ${valorFinal}`;
+    `💰 Valor do frete: R$ ${valorFinal}`;
 }
 
 function whatsapp() {
@@ -32,12 +37,23 @@ function whatsapp() {
     return;
   }
 
-  const mensagem = `🏍️💨 *ALENCAR FRETES*📦\n\n💰 Valor do frete: R$ ${valorFinal}`;
+  const cliente = document.getElementById("cliente").value;
+
+  if (!cliente) {
+    alert("Selecione a cliente.");
+    return;
+  }
+
+  const numero = clientes[cliente];
+
+  const mensagem = 
+`🏍️ *ALENCAR FRETES*
+👤 Cliente: ${cliente}
+💰 Valor do frete: R$ ${valorFinal}`;
 
   // copia automaticamente
   navigator.clipboard.writeText(mensagem);
 
-  // abre o WhatsApp
-  const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
   window.open(url, "_blank");
 }
