@@ -18,12 +18,12 @@ function calcular() {
 
   if (valor < taxaMinima) {
     valor = taxaMinima;
-    document.getElementById("aviso").innerText = "⚠️ Taxa mínima aplicada";
+    document.getElementById("aviso").innerText = "⚠️Taxa Mínima Aplicada✅";
   }
 
   valorFinal = valor.toFixed(2);
   document.getElementById("resultado").innerText =
-    `💰 Valor do frete: R$ ${valorFinal}`;
+    `💰 Valor do Frete: R$ ${valorFinal}`;
 }
 
 function whatsapp() {
@@ -32,7 +32,7 @@ function whatsapp() {
     return;
   }
 
-  const mensagem = `🏍️ *ALENCAR FRETES*\n\n💰 Valor do frete: R$ ${valorFinal}`;
+  const mensagem = `🏍️💨 *ALENCAR FRETES*📦\n\n💰 Valor do frete: R$ ${valorFinal}`;
 
   // copia automaticamente
   navigator.clipboard.writeText(mensagem);
