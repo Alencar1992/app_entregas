@@ -17,6 +17,9 @@ function calcularFrete() {
     mensagem = "⚠️ Aplicada taxa mínima";
   }
 
-  document.getElementById("resultado").innerHTML =
-    `💰 Valor do frete: <strong>R$ ${valor.toFixed(2)}</strong><br>${mensagem}`;
+document.getElementById("resultado").innerHTML = `
+  💰 <strong>Valor do frete:</strong> R$ ${valor.toFixed(2)}
+  ${mensagem ? `<div class="aviso">${mensagem}</div>` : ""}
+`;
+
 }
