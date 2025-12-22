@@ -85,31 +85,5 @@ input {
 
 .linha {
   margin-bottom: 5px;
-}
 
-/* MODAL */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-card {
-  background: #1c1c1c;
-  padding: 20px;
-  border-radius: 15px;
-  width: 300px;
-}
-
-.salvar {
-  background: #00ffb3;
-  color: #000;
-}
-
-.fechar {
-  background: #444;
-  color: #fff;
 }
