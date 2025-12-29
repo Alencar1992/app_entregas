@@ -3,7 +3,7 @@ let valorFinal = 0;
 const clientes = {
   PriPel: "5511981071671",
   KarlaBrie: "5511968971239",
-  Heldir: "5511981053823"
+  Heldir: "5511981053823",
 };
 
 function calcular() {
