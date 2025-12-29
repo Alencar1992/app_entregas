@@ -28,14 +28,18 @@
 
     <button onclick="whatsapp()">📲 Enviar WhatsApp</button>
 
-    <hr> <div class="cadastro-area">
-      <h3>➕ Novo Cliente</h3>
-      <input type="text" id="novoNome" placeholder="Nome do Cliente">
-      <input type="number" id="novoTelefone" placeholder="55119...">
-      <button onclick="salvarNovoCliente()" class="btn-secundario">Salvar Cliente</button>
-    </div>
+   <div class="cadastro-area">
+  <h3>➕ Gerenciar Clientes</h3>
+  <input type="text" id="novoNome" placeholder="Nome do Cliente">
+  <input type="number" id="novoTelefone" placeholder="55119...">
+  <button onclick="salvarNovoCliente()" class="btn-secundario">Salvar / Atualizar</button>
+  
+  <ul id="listaGerenciamento" style="text-align: left; margin-top: 15px; font-size: 0.9em; list-style: none; padding: 0;">
+  </ul>
+</div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
