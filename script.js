@@ -1,10 +1,23 @@
 let valorFinal = 0;
 
-const clientes = {
-  PriPel: "5511981071671",
-  KarlaBrie: "5511968971239",
-  Heldir: "5511981053823",
+// 1. Clientes fixos (Sempre aparecem)
+const clientesFixos = {
+  "PriPel": "5511981071671",
+  "Karla Brie": "5511968971239",
+  "Heldir": "5511981053823",
 };
+
+// 2. Carrega clientes novos salvos no navegador (ou cria vazio se não houver)
+let novosClientes = JSON.parse(localStorage.getItem("meusNovosClientes")) || {};
+
+// 3. Função para você cadastrar novos clientes via console ou botão
+function cadastrarNovoCliente(nome, telefone) {
+  novosClientes[nome] = telefone;
+  localStorage.setItem("meusNovosClientes", JSON.stringify(novosClientes));
+  alert(`Cliente ${nome} cadastrado com sucesso!`);
+  // Opcional: recarregar a página para atualizar o <select> se você tiver um gerador de opções
+  location.reload(); 
+}
 
 function calcular() {
   const km = parseFloat(document.getElementById("km").value);
@@ -13,6 +26,11 @@ function calcular() {
 
   let valor = 0;
   document.getElementById("aviso").innerText = "";
+
+  if (isNaN(km)) {
+    alert("Por favor, insira a quilometragem.");
+    return;
+  }
 
   if (km <= 15) {
     valor = km * valorKm;
@@ -28,8 +46,7 @@ function calcular() {
   }
 
   valorFinal = valor.toFixed(2);
-  document.getElementById("resultado").innerText =
-    `💰 Valor do frete: R$ ${valorFinal}`;
+  document.getElementById("resultado").innerText = `💰 Valor do frete: R$ ${valorFinal}`;
 }
 
 function whatsapp() {
@@ -38,21 +55,27 @@ function whatsapp() {
     return;
   }
 
-  const cliente = document.getElementById("cliente").value;
+  const clienteSelecionado = document.getElementById("cliente").value;
 
-  if (!cliente) {
+  if (!clienteSelecionado) {
     alert("Selecione a cliente.");
     return;
   }
 
-  const numero = clientes[cliente];
+  // 4. Junta as duas listas para buscar o número correto
+  const todosClientes = { ...clientesFixos, ...novosClientes };
+  const numero = todosClientes[clienteSelecionado];
 
-  const mensagem = 
-`🏍️ *ALENCAR FRETES*
-👤 Cliente: ${cliente}
+  if (!numero) {
+    alert("Número não encontrado para este cliente.");
+    return;
+  }
+
+  const mensagem = `🏍️ *ALENCAR FRETES*
+👤 Cliente: ${clienteSelecionado}
 💰 Valor do frete: R$ ${valorFinal}`;
 
-  // copia automaticamente
+  // Copia automaticamente
   navigator.clipboard.writeText(mensagem);
 
   const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
