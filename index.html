@@ -14,7 +14,6 @@
 
     <input type="number" id="km" placeholder="Distância em KM">
 
-    <!-- NOVO: SELEÇÃO DE CLIENTE -->
     <select id="cliente">
       <option value="">Selecione a cliente</option>
       <option value="PriPel">PriPel</option>
@@ -28,10 +27,15 @@
     <p id="aviso"></p>
 
     <button onclick="whatsapp()">📲 Enviar WhatsApp</button>
+
+    <hr> <div class="cadastro-area">
+      <h3>➕ Novo Cliente</h3>
+      <input type="text" id="novoNome" placeholder="Nome do Cliente">
+      <input type="number" id="novoTelefone" placeholder="55119...">
+      <button onclick="salvarNovoCliente()" class="btn-secundario">Salvar Cliente</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
-
