@@ -1,125 +1,132 @@
 let valorFinal = 0;
 
-// 1. Clientes fixos
+// 1. Clientes Fixos (Estes não podem ser excluídos pelo botão)
 const clientesFixos = {
-  PriPel: "5511981071671",
-  KarlaBrie: "5511968971239",
-  Heldir: "5511981053823",
+    "PriPel": "5511981071671",
+    "Karla Brie": "5511968971239",
+    "Heldir": "5511981053823"
 };
 
-// 2. Carrega novos clientes do localStorage (com verificação de erro)
-let novosClientes = {};
-try {
-  const dadosSalvos = localStorage.getItem("meusNovosClientes");
-  if (dadosSalvos) {
-    novosClientes = JSON.parse(dadosSalvos);
-  }
-} catch (e) {
-  console.error("Erro ao carregar clientes salvos", e);
-}
+// 2. Carrega clientes novos do localStorage
+let novosClientes = JSON.parse(localStorage.getItem("meusNovosClientes")) || {};
 
-// 3. Função para popular o SELECT com os clientes novos
-function carregarClientesNoSelect() {
-  const select = document.getElementById("cliente");
-  
-  // Percorre o objeto de novos clientes e adiciona no HTML
-  for (let nome in novosClientes) {
-    // Verifica se o cliente já não existe no select (para não duplicar)
-    if (!document.querySelector(`option[value="${nome}"]`)) {
-      let opt = document.createElement('option');
-      opt.value = nome;
-      opt.innerHTML = nome;
-      select.appendChild(opt);
+// Função para atualizar o Select e a Lista de Edição
+function atualizarInterface() {
+    const select = document.getElementById("cliente");
+    const listaGere = document.getElementById("listaGerenciamento");
+
+    // Limpa tudo antes de reconstruir
+    select.innerHTML = '<option value="">Selecione a cliente</option>';
+    listaGere.innerHTML = "";
+
+    // Junta fixos e novos em um só lugar para facilitar
+    const todos = { ...clientesFixos, ...novosClientes };
+
+    for (let nome in todos) {
+        // Adiciona no SELECT
+        let opt = document.createElement('option');
+        opt.value = nome;
+        opt.innerHTML = nome;
+        select.appendChild(opt);
+
+        // Se o cliente for um dos "Novos", adiciona botões de Editar e Excluir
+        if (novosClientes[nome]) {
+            let li = document.createElement('li');
+            li.style.padding = "5px 0";
+            li.style.borderBottom = "1px solid #eee";
+            li.innerHTML = `
+                <span>${nome}</span>
+                <div style="float: right">
+                    <button onclick="prepararEdicao('${nome}')" style="background:none; border:none; cursor:pointer;">✏️</button>
+                    <button onclick="excluirCliente('${nome}')" style="background:none; border:none; cursor:pointer;">❌</button>
+                </div>
+            `;
+            listaGere.appendChild(li);
+        }
     }
-  }
 }
 
-// Chama a função assim que abrir a página
-carregarClientesNoSelect();
-
-// 4. Função Corrigida para Salvar
+// 3. Salvar ou Editar
 function salvarNovoCliente() {
-  const nomeInput = document.getElementById("novoNome");
-  const telefoneInput = document.getElementById("novoTelefone");
-  
-  const nome = nomeInput.value.trim();
-  const telefone = telefoneInput.value.trim();
+    const nome = document.getElementById("novoNome").value.trim();
+    const fone = document.getElementById("novoTelefone").value.trim();
 
-  if (nome === "" || telefone === "") {
-    alert("Por favor, preencha nome e telefone.");
-    return;
-  }
+    if (!nome || !fone) {
+        alert("Preencha nome e telefone!");
+        return;
+    }
 
-  // Adiciona ao objeto na memória
-  novosClientes[nome] = telefone;
-  
-  // Salva no localStorage (Transforma objeto em texto)
-  localStorage.setItem("meusNovosClientes", JSON.stringify(novosClientes));
+    // Se tentar salvar com nome de um fixo, avisa
+    if (clientesFixos[nome]) {
+        alert("Este nome pertence a um cliente fixo e não pode ser alterado.");
+        return;
+    }
 
-  alert(`Cliente ${nome} cadastrado com sucesso!`);
-  
-  // Limpa os campos
-  nomeInput.value = "";
-  telefoneInput.value = "";
-
-  // Atualiza a lista na tela imediatamente sem precisar de F5
-  carregarClientesNoSelect();
+    novosClientes[nome] = fone;
+    localStorage.setItem("meusNovosClientes", JSON.stringify(novosClientes));
+    
+    document.getElementById("novoNome").value = "";
+    document.getElementById("novoTelefone").value = "";
+    
+    atualizarInterface();
 }
 
+// 4. Preparar Edição (Puxa os dados para os campos)
+function prepararEdicao(nome) {
+    document.getElementById("novoNome").value = nome;
+    document.getElementById("novoTelefone").value = novosClientes[nome];
+    document.getElementById("novoNome").focus();
+}
+
+// 5. Excluir
+function excluirCliente(nome) {
+    if (confirm(`Excluir ${nome}?`)) {
+        delete novosClientes[nome];
+        localStorage.setItem("meusNovosClientes", JSON.stringify(novosClientes));
+        atualizarInterface();
+    }
+}
+
+// Funções de Cálculo e WhatsApp permanecem as mesmas
 function calcular() {
-  const kmInput = document.getElementById("km");
-  const km = parseFloat(kmInput.value);
-  const valorKm = 1.90;
-  const taxaMinima = 5.00;
+    const km = parseFloat(document.getElementById("km").value);
+    const valorKm = 1.90;
+    const taxaMinima = 5.00;
+    let valor = 0;
 
-  if (isNaN(km) || km <= 0) {
-    alert("Insira uma distância válida.");
-    return;
-  }
+    if (isNaN(km)) return;
 
-  let valor = 0;
-  document.getElementById("aviso").innerText = "";
+    if (km <= 15) {
+        valor = km * valorKm;
+    } else {
+        const base = 15 * valorKm;
+        const extra = (km - 15) * (0.5 * valorKm);
+        valor = base + extra;
+    }
 
-  if (km <= 15) {
-    valor = km * valorKm;
-  } else {
-    const base = 15 * valorKm;
-    const extra = (km - 15) * (0.5 * valorKm);
-    valor = base + extra;
-  }
+    if (valor < taxaMinima) {
+        valor = taxaMinima;
+        document.getElementById("aviso").innerText = "⚠️ Taxa mínima aplicada";
+    } else {
+        document.getElementById("aviso").innerText = "";
+    }
 
-  if (valor < taxaMinima) {
-    valor = taxaMinima;
-    document.getElementById("aviso").innerText = "⚠️ Taxa mínima aplicada";
-  }
-
-  valorFinal = valor.toFixed(2);
-  document.getElementById("resultado").innerText = `💰 Valor do frete: R$ ${valorFinal}`;
+    valorFinal = valor.toFixed(2);
+    document.getElementById("resultado").innerText = `💰 Valor do frete: R$ ${valorFinal}`;
 }
 
 function whatsapp() {
-  if (valorFinal === 0) {
-    alert("Calcule o frete antes de enviar.");
-    return;
-  }
+    if (valorFinal === 0) return alert("Calcule o frete!");
+    const nome = document.getElementById("cliente").value;
+    if (!nome) return alert("Selecione o cliente!");
 
-  const clienteSelecionado = document.getElementById("cliente").value;
+    const todos = { ...clientesFixos, ...novosClientes };
+    const numero = todos[nome];
+    const mensagem = `🏍️ *ALENCAR FRETES*\n👤 Cliente: ${nome}\n💰 Valor do frete: R$ ${valorFinal}`;
 
-  if (!clienteSelecionado) {
-    alert("Selecione a cliente.");
-    return;
-  }
-
-  // Combina fixos e novos para pegar o número
-  const todosOsContatos = { ...clientesFixos, ...novosClientes };
-  const numero = todosOsContatos[clienteSelecionado];
-
-  const mensagem = `🏍️ *ALENCAR FRETES*
-👤 Cliente: ${clienteSelecionado}
-💰 Valor do frete: R$ ${valorFinal}`;
-
-  navigator.clipboard.writeText(mensagem);
-  
-  const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
-  window.open(url, "_blank");
+    navigator.clipboard.writeText(mensagem);
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, "_blank");
 }
+
+// Inicia a lista ao carregar a página
+atualizarInterface();
